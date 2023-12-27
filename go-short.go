@@ -1,22 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"html"
 	"log"
 	"net/http"
 
-	"github.com/Samurahh/go-short/generator"
+	"github.com/Samurahh/go-short/router"
 )
 
-var httpServer http.Server = http.Server{
+var httpServer *http.Server = &http.Server{
 	Addr: ":8080", // default port
+	Handler: router.Router(),
 }
 
 func main() {
-	http.HandleFunc("/gen", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, html.EscapeString(generator.ShortUrl()))
-		w.Header().Add("Content-Type", "text/plain")
-	})
 	log.Fatal(httpServer.ListenAndServe())
 }
