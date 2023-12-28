@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/Samurahh/go-short/router"
 )
@@ -23,10 +22,8 @@ func main() {
 	flag.StringVar(&address, "address", "", "address the http server will run on | default 127.0.0.1 / localhost")
 	flag.Parse()
 
-	if port != 0 {
-		portStr := strconv.Itoa(port)
-		httpServer.Addr = fmt.Sprintf("%s:%s", address, portStr)
 	}
+	httpServer.Addr = fmt.Sprintf("%s:%s", address, port)
 
 	log.Fatal(httpServer.ListenAndServe())
 }
