@@ -23,7 +23,7 @@ func main() {
 	flag.Parse()
 
 	if port < 0 || port > 65535 {
-		log.Panicln("Port %v out of range [0, 65535]", port)
+		log.Panicf("Port %v out of range [0, 65535]", port)
 	}
 	httpServer.Addr = fmt.Sprintf("%s:%s", address, port)
 
