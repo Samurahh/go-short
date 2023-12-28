@@ -25,7 +25,7 @@ func main() {
 	if port < 0 || port > 65535 {
 		log.Panicf("Port %v out of range [0, 65535]", port)
 	}
-	httpServer.Addr = fmt.Sprintf("%s:%s", address, port)
+	httpServer.Addr = fmt.Sprintf("%s:%v", address, port)
 
 	log.Fatal(httpServer.ListenAndServe())
 }
