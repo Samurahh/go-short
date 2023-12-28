@@ -17,14 +17,15 @@ var httpServer *http.Server = &http.Server{
 
 func main() {
 	var port int
-	var host string
-	flag.IntVar(&port, "p", 8080, "port to run the http server on")
-	flag.StringVar(&host, "h", "", "hostname the http server will run on")
+	var address string
+	flag.IntVar(&port, "p", 8080, "port to run the http server on | default 8080")
+	flag.IntVar(&port, "port", 8080, "port to run the http server on | default 8080")
+	flag.StringVar(&address, "address", "", "address the http server will run on | default 127.0.0.1 / localhost")
 	flag.Parse()
 
 	if port != 0 {
 		portStr := strconv.Itoa(port)
-		httpServer.Addr = fmt.Sprintf("%s:%s", host, portStr)
+		httpServer.Addr = fmt.Sprintf("%s:%s", address, portStr)
 	}
 
 	log.Fatal(httpServer.ListenAndServe())
