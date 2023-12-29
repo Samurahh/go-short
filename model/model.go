@@ -3,15 +3,16 @@ package model
 import "time"
 
 type CreateShortURLRequest struct {
-	Url            string    `json:"url"`
+	Url            string     `json:"url"`
 	ExpirationTime *time.Time `json:"expirationTime"`
+	Id             string     `json:"id"`
 }
 
 type ShortenedURL struct {
-	OriginalUrl    string    `json:"originalUrl"`
-	ShortUrl       string    `json:"shortUrl"`
+	OriginalUrl    string     `json:"originalUrl"`
+	ShortUrl       string     `json:"shortUrl"`
 	ExpirationTime *time.Time `json:"expirationTime"`
-	AddedTime      time.Time `json:"addedTime"`
+	AddedTime      time.Time  `json:"addedTime"`
 }
 
 type ShortenedURLResponse struct {
