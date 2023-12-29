@@ -1,8 +1,11 @@
 package controller
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/Samurahh/go-short/model"
 )
 
 // @Tag User
@@ -12,6 +15,24 @@ import (
 // @Success 200 (object) model.ShortenedURLResponse Shortened URL response
 // @Router /api/v1/shorten-url [post]
 func ShortenURLHandler(w http.ResponseWriter, r *http.Request) {
+	var CreateShortURLRequest []model.CreateShortURLRequest
+
+	err := json.NewDecoder(r.Body).Decode(&CreateShortURLRequest)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	for _, v := range CreateShortURLRequest {
+		if v.Url == "" {
+			http.Error(w, "Url cannot be empty", http.StatusBadRequest)
+			return
+		}
+	}
+
+	log.Printf("RequestBody: %v", CreateShortURLRequest)
+
 	log.Println("/api/v1/shorten-url")
 }
 
