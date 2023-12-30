@@ -2,12 +2,16 @@ package generator
 
 import "github.com/golang-jwt/jwt"
 
-func GenerateToken(url string) *jwt.Token {
+func GenerateToken(url string) (string, error) {
 	var claims = jwt.MapClaims{
-		"url":    url,
-		"secret": "SECRET",
+		"url": url,
 	}
 
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
-	return jwtToken
+	signed, err := jwtToken.SignedString("SECRET")
+	if err != nil {
+		return "", err
+	}
+
+	return signed, nil
 }
