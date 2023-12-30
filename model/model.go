@@ -13,6 +13,7 @@ type ShortenedURL struct {
 	ShortUrl       string     `json:"shortUrl"`
 	ExpirationTime *time.Time `json:"expirationTime"`
 	AddedTime      time.Time  `json:"addedTime"`
+	OwnershipToken string     `json:"ownershipToken"`
 }
 
 type ShortenedURLResponse struct {
