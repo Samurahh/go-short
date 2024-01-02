@@ -1,8 +1,14 @@
 package controller
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
+	"time"
+
+	"github.com/Samurahh/go-short/generator"
+	"github.com/Samurahh/go-short/model"
+	"github.com/google/uuid"
 )
 
 // @Tag User
@@ -13,6 +19,57 @@ import (
 // @Router /api/v1/shorten-url [post]
 func ShortenURLHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("/api/v1/shorten-url")
+	var CreateShortURLRequest []model.CreateShortURLRequest
+
+	err := json.NewDecoder(r.Body).Decode(&CreateShortURLRequest)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var ReturnShortURLs []model.ShortenedURLResponse
+
+	for _, v := range CreateShortURLRequest {
+		if v.Url == "" {
+			http.Error(w, "Url cannot be empty", http.StatusBadRequest)
+			return
+		}
+		uuid, err := uuid.NewRandom()
+		if err != nil {
+			log.Println(err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		v.Id = uuid.String()
+
+		token, err := generator.GenerateToken()
+		if err != nil {
+			log.Println(err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		var shortenedURL = model.ShortenedURL{
+			OriginalUrl:    v.Url,
+			ShortUrl:       generator.ShortUrl(),
+			ExpirationTime: v.ExpirationTime,
+			AddedTime:      time.Now(),
+			OwnershipToken: token,
+		}
+
+		ReturnShortURLs = append(ReturnShortURLs, model.ShortenedURLResponse{
+			ShortenedURL: shortenedURL,
+			Timestamp:    time.Now(),
+		})
+	}
+
+	err = json.NewEncoder(w).Encode(ReturnShortURLs)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
 
 // @Tag User
