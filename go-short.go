@@ -6,12 +6,12 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Samurahh/go-short/router"
+	"github.com/Samurahh/go-short/controller"
 )
 
+// By default it listens to Addr: ":8080" as configured in main()
 var httpServer *http.Server = &http.Server{
-	Addr:    ":8080", // default port
-	Handler: router.Router(),
+	Handler: controller.Router(),
 }
 
 func main() {
