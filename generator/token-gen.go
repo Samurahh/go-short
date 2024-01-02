@@ -1,19 +1,19 @@
 package generator
 
-import "github.com/golang-jwt/jwt"
+import (
+	"crypto/rand"
+	"encoding/base64"
+)
 
-var secretKey = []byte("SECRET")
-
-func GenerateToken(url string) (string, error) {
-	var claims = jwt.MapClaims{
-		"url": url,
-	}
-
-	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signed, err := jwtToken.SignedString(secretKey)
+// GenerateToken generates a random 32 byte token and encodes it as a base64 string.
+func GenerateToken() (string, error) {
+	bytes := make([]byte, 32)
+	_, err := rand.Read(bytes)
 	if err != nil {
 		return "", err
 	}
 
-	return signed, nil
+	key := base64.StdEncoding.EncodeToString(bytes)
+
+	return key, nil
 }

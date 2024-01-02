@@ -43,7 +43,7 @@ func ShortenURLHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		v.Id = uuid.String()
 
-		token, err := generator.GenerateToken(v.Url)
+		token, err := generator.GenerateToken()
 		if err != nil {
 			log.Println(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
